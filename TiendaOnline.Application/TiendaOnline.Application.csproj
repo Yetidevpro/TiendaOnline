@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TiendaOnline.API\TiendaOnline.API.csproj" />
     <ProjectReference Include="..\TiendaOnline.Domain\TiendaOnline.Domain.csproj" />
     <ProjectReference Include="..\TiendaOnline.Infrastructure\TiendaOnline.Infrastructure.csproj" />
   </ItemGroup>
