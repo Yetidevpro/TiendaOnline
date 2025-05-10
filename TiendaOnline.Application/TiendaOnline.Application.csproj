@@ -1,10 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TiendaOnline.API\TiendaOnline.API.csproj" />
+    <ProjectReference Include="..\TiendaOnline.Domain\TiendaOnline.Domain.csproj" />
+    <ProjectReference Include="..\TiendaOnline.Infrastructure\TiendaOnline.Infrastructure.csproj" />
+  </ItemGroup>
 
 </Project>

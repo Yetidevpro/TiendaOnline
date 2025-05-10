@@ -13,10 +13,19 @@ namespace TiendaOnline.Infrastructure.Data
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Color> Colores { get; set; }
         public DbSet<Talla> Tallas { get; set; }
+        public DbSet<ProductoColor> ProductoColores { get; set; }
+        public DbSet<ProductoTalla> ProductoTallas { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+
+            modelBuilder.Entity<Producto>()
+              .Property(p => p.Precio)
+              .HasPrecision(18, 2);
+
 
             modelBuilder.Entity<ProductoColor>()
                 .HasOne(pc => pc.Producto)
