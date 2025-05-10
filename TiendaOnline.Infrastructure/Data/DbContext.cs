@@ -18,16 +18,34 @@ namespace TiendaOnline.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuraciones adicionales si se necesitan
-            modelBuilder.Entity<Color>()
-                .HasMany(c => c.Productos)
-                .WithOne(p => p.Color)
-                .HasForeignKey(p => p.ColorId);
+            modelBuilder.Entity<ProductoColor>()
+                .HasOne(pc => pc.Producto)
+                .WithMany(p => p.ProductoColores)
+                .HasForeignKey(pc => pc.ProductoId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Talla>()
-                .HasMany(t => t.Productos)
-                .WithOne(p => p.Talla)
-                .HasForeignKey(p => p.TallaId);
+
+            modelBuilder.Entity<ProductoColor>()
+                .HasOne(pc => pc.Color)
+                .WithMany(c => c.ProductoColores)
+                .HasForeignKey(pc => pc.ColorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
+            modelBuilder.Entity<ProductoTalla>()
+                .HasOne(pt => pt.Producto)
+                .WithMany(p => p.ProductoTallas)
+                .HasForeignKey(pt => pt.ProductoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<ProductoTalla>()
+                .HasOne(pt => pt.Talla)
+                .WithMany(t => t.ProductoTallas)
+                .HasForeignKey(pt => pt.TallaId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
+
     }
 }

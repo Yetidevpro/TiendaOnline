@@ -7,15 +7,12 @@ namespace TiendaOnline.Domain.Models
     {
         [Key]
         public int ColorId { get; set; }
+
         [Required]
         [StringLength(50)]
         public string ColorNombre { get; set; }
 
-        // Relación con Producto
-        public ICollection<Producto> Productos { get; set; } = new List<Producto>();
-        public Color()
-        {
-            Productos = new List<Producto>();
-        }
+        public ICollection<ProductoColor> ProductoColores { get; set; } = new List<ProductoColor>();
     }
+
 }
