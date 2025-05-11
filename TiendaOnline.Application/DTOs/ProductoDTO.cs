@@ -23,6 +23,7 @@ namespace TiendaOnline.Application.DTOs
 
         [Required]
         public int TallaId { get; set; }
+
     }
 
 }

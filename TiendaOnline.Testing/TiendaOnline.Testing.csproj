@@ -1,20 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>12.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <RootNamespace>TiendaOnline.Testing</RootNamespace>
-    <TargetFramework>net8.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>12.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<RootNamespace>TiendaOnline.Testing</RootNamespace>
+		<TargetFramework>net8.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="xunit.analyzers" Version="1.21.0" />
-    <PackageReference Include="xunit.v3.extensibility.core" Version="2.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+		<PackageReference Include="xunit" Version="2.9.3" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ServicesTest\" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\TiendaOnline.API\TiendaOnline.API.csproj" />
+		<ProjectReference Include="..\TiendaOnline.Application\TiendaOnline.Application.csproj" />
+		<ProjectReference Include="..\TiendaOnline.Domain\TiendaOnline.Domain.csproj" />
+		<ProjectReference Include="..\TiendaOnline.Infrastructure\TiendaOnline.Infrastructure.csproj" />
+	</ItemGroup>
 
 </Project>

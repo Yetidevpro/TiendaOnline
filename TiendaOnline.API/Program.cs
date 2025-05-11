@@ -16,6 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TiendaOnlineDB")));
 
 builder.Services.AddScoped<IProductoService, ProductoService>();
+builder.Services.AddScoped<IColorService, ColorService>();
+builder.Services.AddScoped<ITallaService, TallaService>();
 
 var app = builder.Build();
 
