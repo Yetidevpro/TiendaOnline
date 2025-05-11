@@ -11,7 +11,7 @@ namespace TiendaOnline.Domain.Models
         [StringLength(10)]
         public string TallaNombre { get; set; }
 
-        public ICollection<ProductoTalla> ProductoTallas { get; set; } = new List<ProductoTalla>();
+        public ICollection<Producto> Productos { get; set; } = new List<Producto>();
     }
 
 }

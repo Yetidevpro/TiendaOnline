@@ -21,28 +21,28 @@ namespace TiendaOnline.Application.Services
             _context = context;
         }
 
-        public async Task<List<ProductoDTO>> GetAllAsync()
+        public async Task<IEnumerable<ProductoDTO>> ObtenerTodosAsync()
         {
-            var productos = await _context.Productos
-                .Include(p => p.ProductoColores)
-                .Include(p => p.ProductoTallas)
-                .ToListAsync();
-
-            return productos.Select(p => new ProductoDTO
-            {
-                Id = p.Id,
-                Precio = p.Precio,
-                Descripcion = p.Descripcion,
-                Colores = p.ProductoColores.Select(pc => pc.ColorId).ToList(),
-                Tallas = p.ProductoTallas.Select(pt => pt.TallaId).ToList()
-            }).ToList();
+            return await _context.Productos
+                .Include(p => p.Color)
+                .Include(p => p.Talla)
+                .Select(p => new ProductoDTO
+                {
+                    Id = p.Id,
+                    Precio = p.Precio,
+                    Descripcion = p.Descripcion,
+                    ColorId = p.ColorId,
+                    ColorNombre = p.Color.ColorNombre,
+                    TallaId = p.TallaId,
+                    TallaNombre = p.Talla.TallaNombre
+                }).ToListAsync();
         }
 
-        public async Task<ProductoDTO> GetByIdAsync(int id)
+        public async Task<ProductoDTO> ObtenerPorIdAsync(int id)
         {
             var producto = await _context.Productos
-                .Include(p => p.ProductoColores)
-                .Include(p => p.ProductoTallas)
+                .Include(p => p.Color)
+                .Include(p => p.Talla)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (producto == null) return null;
@@ -52,93 +52,71 @@ namespace TiendaOnline.Application.Services
                 Id = producto.Id,
                 Precio = producto.Precio,
                 Descripcion = producto.Descripcion,
-                Colores = producto.ProductoColores.Select(pc => pc.ColorId).ToList(),
-                Tallas = producto.ProductoTallas.Select(pt => pt.TallaId).ToList()
+                ColorId = producto.ColorId,
+                ColorNombre = producto.Color.ColorNombre,
+                TallaId = producto.TallaId,
+                TallaNombre = producto.Talla.TallaNombre
             };
         }
 
-        public async Task<bool> CreateAsync(ProductoDTO productoDTO)
+        public async Task<int> CrearAsync(ProductoDTO productoDto)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            await ValidarColorYTallaAsync(productoDto.ColorId, productoDto.TallaId);
 
             var producto = new Producto
             {
-                Precio = productoDTO.Precio,
-                Descripcion = productoDTO.Descripcion
+                Precio = productoDto.Precio,
+                Descripcion = productoDto.Descripcion,
+                ColorId = productoDto.ColorId,
+                TallaId = productoDto.TallaId
             };
 
             _context.Productos.Add(producto);
             await _context.SaveChangesAsync();
 
-            foreach (var colorId in productoDTO.Colores)
-            {
-                _context.ProductoColores.Add(new ProductoColor { ProductoId = producto.Id, ColorId = colorId });
-            }
-
-            foreach (var tallaId in productoDTO.Tallas)
-            {
-                _context.ProductoTallas.Add(new ProductoTalla { ProductoId = producto.Id, TallaId = tallaId });
-            }
-
-            await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
-            return true;
+            return producto.Id;
         }
 
-        public async Task<bool> UpdateAsync(int id, ProductoDTO productoDTO)
+        public async Task<bool> ActualizarAsync(ProductoDTO productoDto)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            var producto = await _context.Productos
-                .Include(p => p.ProductoColores)
-                .Include(p => p.ProductoTallas)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            var producto = await _context.Productos.FindAsync(productoDto.Id);
 
             if (producto == null) return false;
 
-            producto.Precio = productoDTO.Precio;
-            producto.Descripcion = productoDTO.Descripcion;
+            await ValidarColorYTallaAsync(productoDto.ColorId, productoDto.TallaId);
 
-            
-            _context.ProductoColores.RemoveRange(producto.ProductoColores);
-            foreach (var colorId in productoDTO.Colores)
-            {
-                _context.ProductoColores.Add(new ProductoColor { ProductoId = id, ColorId = colorId });
-            }
+            producto.Precio = productoDto.Precio;
+            producto.Descripcion = productoDto.Descripcion;
+            producto.ColorId = productoDto.ColorId;
+            producto.TallaId = productoDto.TallaId;
 
-            
-            _context.ProductoTallas.RemoveRange(producto.ProductoTallas);
-            foreach (var tallaId in productoDTO.Tallas)
-            {
-                _context.ProductoTallas.Add(new ProductoTalla { ProductoId = id, TallaId = tallaId });
-            }
-
+            _context.Productos.Update(producto);
             await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
+
             return true;
         }
 
-
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            var producto = await _context.Productos
-                .Include(p => p.ProductoColores)
-                .Include(p => p.ProductoTallas)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
+            var producto = await _context.Productos.FindAsync(id);
             if (producto == null) return false;
 
-            _context.ProductoColores.RemoveRange(producto.ProductoColores);
-            _context.ProductoTallas.RemoveRange(producto.ProductoTallas);
             _context.Productos.Remove(producto);
-
             await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
+
             return true;
+        }
+
+        private async Task ValidarColorYTallaAsync(int colorId, int tallaId)
+        {
+            var colorExiste = await _context.Colores.AnyAsync(c => c.ColorId == colorId);
+            if (!colorExiste)
+                throw new ArgumentException("ColorId no válido.");
+
+            var tallaExiste = await _context.Tallas.AnyAsync(t => t.TallaId == tallaId);
+            if (!tallaExiste)
+                throw new ArgumentException("TallaId no válido.");
         }
 
     }
-
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,10 +11,22 @@ namespace TiendaOnline.Application.DTOs
     public class ProductoDTO
     {
         public int Id { get; set; }
+        [Required]
+        [Range(0, double.MaxValue)]
         public decimal Precio { get; set; }
+        [Required]
+        [StringLength(500)]
         public string Descripcion { get; set; }
-        public List<int> Colores { get; set; }
-        public List<int> Tallas { get; set; }
+
+        [Required]
+        public int ColorId { get; set; }
+
+        public string ColorNombre { get; set; } // Solo lectura, para mostrar
+
+        [Required]
+        public int TallaId { get; set; }
+
+        public string TallaNombre { get; set; } // Solo lectura, para mostrar
     }
 
 }

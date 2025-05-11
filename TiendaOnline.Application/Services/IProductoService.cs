@@ -9,11 +9,10 @@ namespace TiendaOnline.Application.Services
 {
     public interface IProductoService
     {
-        Task<List<ProductoDTO>> GetAllAsync();
-        Task<ProductoDTO> GetByIdAsync(int id);
-        Task<bool> CreateAsync(ProductoDTO productoDTO);
-        Task<bool> UpdateAsync(int id, ProductoDTO productoDTO);
-        Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<ProductoDTO>> ObtenerTodosAsync();
+        Task<ProductoDTO> ObtenerPorIdAsync(int id);
+        Task<int> CrearAsync(ProductoDTO productoDto);
+        Task<bool> ActualizarAsync(ProductoDTO productoDto);
+        Task<bool> EliminarAsync(int id);
     }
-
 }
