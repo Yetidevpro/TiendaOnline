@@ -1,5 +1,4 @@
-﻿// TallaController.cs
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TiendaOnline.Application.Services;
 using TiendaOnline.Domain.Models;
 
