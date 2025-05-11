@@ -8,7 +8,7 @@ namespace TiendaOnline.Domain.Models
         public int TallaId { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [StringLength(20)]
         public string TallaNombre { get; set; }
 
         public ICollection<Producto> Productos { get; set; } = new List<Producto>();

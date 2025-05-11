@@ -21,12 +21,8 @@ namespace TiendaOnline.Application.DTOs
         [Required]
         public int ColorId { get; set; }
 
-        public string ColorNombre { get; set; } // Solo lectura, para mostrar
-
         [Required]
         public int TallaId { get; set; }
-
-        public string TallaNombre { get; set; } // Solo lectura, para mostrar
     }
 
 }

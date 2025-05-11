@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TiendaOnline.Application.Services;
 using TiendaOnline.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 // Configuración de Entity Framework Core con SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TiendaOnlineDB")));
+
+builder.Services.AddScoped<IProductoService, ProductoService>();
 
 var app = builder.Build();
 

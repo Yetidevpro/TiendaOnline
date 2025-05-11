@@ -32,9 +32,7 @@ namespace TiendaOnline.Application.Services
                     Precio = p.Precio,
                     Descripcion = p.Descripcion,
                     ColorId = p.ColorId,
-                    ColorNombre = p.Color.ColorNombre,
                     TallaId = p.TallaId,
-                    TallaNombre = p.Talla.TallaNombre
                 }).ToListAsync();
         }
 
@@ -53,9 +51,7 @@ namespace TiendaOnline.Application.Services
                 Precio = producto.Precio,
                 Descripcion = producto.Descripcion,
                 ColorId = producto.ColorId,
-                ColorNombre = producto.Color.ColorNombre,
                 TallaId = producto.TallaId,
-                TallaNombre = producto.Talla.TallaNombre
             };
         }
 

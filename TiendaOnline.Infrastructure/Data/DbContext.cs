@@ -90,7 +90,7 @@ namespace TiendaOnline.Infrastructure.Data
                  new Talla { TallaId = 17, TallaNombre = "L" },
                  new Talla { TallaId = 18, TallaNombre = "XL" },
                  new Talla { TallaId = 19, TallaNombre = "XXL" },
-                 new Talla { TallaId = 19, TallaNombre = "3XL" }
+                 new Talla { TallaId = 20, TallaNombre = "3XL" }
             );
         }
 
