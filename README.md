@@ -78,7 +78,8 @@ Se quiere crear una página web con las siguientes necesidades:
 La API utiliza Entity Framework Core como ORM (Object-Relational Mapper) para interactuar con la base de datos. A continuación se detalla la estructura de datos y las relaciones entre entidades:
 
 ### Diagrama de relaciones
-![image](https://github.com/user-attachments/assets/4b280f57-f23b-44a0-8a4a-5c09f498b7f3)
+![Uploading image.png…]()
+
 
 ### Características de la implementación
 
