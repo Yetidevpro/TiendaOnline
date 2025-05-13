@@ -24,23 +24,23 @@ namespace TiendaOnline.Application.Services
         public async Task<IEnumerable<ProductoDTO>> ObtenerTodosAsync()
         {
             return await _context.Productos
-                .Include(p => p.Color)
-                .Include(p => p.Talla)
+                .Include(p => p.ProductoColores)
+                .Include(p => p.ProductoTallas)
                 .Select(p => new ProductoDTO
                 {
                     Id = p.Id,
                     Precio = p.Precio,
                     Descripcion = p.Descripcion,
-                    ColorId = p.ColorId,
-                    TallaId = p.TallaId,
+                    ColoresIds = p.ProductoColores.Select(pc => pc.ColorId).ToList(),
+                    TallasIds = p.ProductoTallas.Select(pt => pt.TallaId).ToList(),
                 }).ToListAsync();
         }
 
         public async Task<ProductoDTO> ObtenerPorIdAsync(int id)
         {
             var producto = await _context.Productos
-                .Include(p => p.Color)
-                .Include(p => p.Talla)
+                .Include(p => p.ProductoColores)
+                .Include(p => p.ProductoTallas)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (producto == null) return null;
@@ -50,22 +50,28 @@ namespace TiendaOnline.Application.Services
                 Id = producto.Id,
                 Precio = producto.Precio,
                 Descripcion = producto.Descripcion,
-                ColorId = producto.ColorId,
-                TallaId = producto.TallaId,
+                ColoresIds = producto.ProductoColores.Select(pc => pc.ColorId).ToList(),
+                TallasIds = producto.ProductoTallas.Select(pt => pt.TallaId).ToList(),
             };
         }
 
         public async Task<int> CrearAsync(ProductoDTO productoDto)
         {
-            await ValidarColorYTallaAsync(productoDto.ColorId, productoDto.TallaId);
+            await ValidarColorYTallaAsync(productoDto.ColoresIds, productoDto.TallasIds);
 
             var producto = new Producto
             {
                 Precio = productoDto.Precio,
-                Descripcion = productoDto.Descripcion,
-                ColorId = productoDto.ColorId,
-                TallaId = productoDto.TallaId
+                Descripcion = productoDto.Descripcion
             };
+
+            producto.ProductoColores = productoDto.ColoresIds
+                .Select(id => new ProductoColor { ColorId = id })
+                .ToList();
+
+            producto.ProductoTallas = productoDto.TallasIds
+                .Select(id => new ProductoTalla { TallaId = id })
+                .ToList();
 
             _context.Productos.Add(producto);
             await _context.SaveChangesAsync();
@@ -75,16 +81,29 @@ namespace TiendaOnline.Application.Services
 
         public async Task<bool> ActualizarAsync(ProductoDTO productoDto)
         {
-            var producto = await _context.Productos.FindAsync(productoDto.Id);
+            var producto = await _context.Productos
+                .Include(p => p.ProductoColores)
+                .Include(p => p.ProductoTallas)
+                .FirstOrDefaultAsync(p => p.Id == productoDto.Id);
 
             if (producto == null) return false;
 
-            await ValidarColorYTallaAsync(productoDto.ColorId, productoDto.TallaId);
+            await ValidarColorYTallaAsync(productoDto.ColoresIds, productoDto.TallasIds);
 
             producto.Precio = productoDto.Precio;
             producto.Descripcion = productoDto.Descripcion;
-            producto.ColorId = productoDto.ColorId;
-            producto.TallaId = productoDto.TallaId;
+
+            // Actualizar colores
+            producto.ProductoColores.Clear();
+            producto.ProductoColores = productoDto.ColoresIds
+                .Select(id => new ProductoColor { ProductoId = producto.Id, ColorId = id })
+                .ToList();
+
+            // Actualizar tallas
+            producto.ProductoTallas.Clear();
+            producto.ProductoTallas = productoDto.TallasIds
+                .Select(id => new ProductoTalla { ProductoId = producto.Id, TallaId = id })
+                .ToList();
 
             _context.Productos.Update(producto);
             await _context.SaveChangesAsync();
@@ -103,15 +122,23 @@ namespace TiendaOnline.Application.Services
             return true;
         }
 
-        private async Task ValidarColorYTallaAsync(int colorId, int tallaId)
+        private async Task ValidarColorYTallaAsync(List<int> colorIds, List<int> tallaIds)
         {
-            var colorExiste = await _context.Colores.AnyAsync(c => c.ColorId == colorId);
-            if (!colorExiste)
-                throw new ArgumentException("ColorId no válido.");
+            var coloresValidos = await _context.Colores
+                .Where(c => colorIds.Contains(c.ColorId))
+                .Select(c => c.ColorId)
+                .ToListAsync();
 
-            var tallaExiste = await _context.Tallas.AnyAsync(t => t.TallaId == tallaId);
-            if (!tallaExiste)
-                throw new ArgumentException("TallaId no válido.");
+            var tallasValidas = await _context.Tallas
+                .Where(t => tallaIds.Contains(t.TallaId))
+                .Select(t => t.TallaId)
+                .ToListAsync();
+
+            if (coloresValidos.Count != colorIds.Count)
+                throw new ArgumentException("Uno o más ColorId no son válidos.");
+
+            if (tallasValidas.Count != tallaIds.Count)
+                throw new ArgumentException("Uno o más TallaId no son válidos.");
         }
 
     }

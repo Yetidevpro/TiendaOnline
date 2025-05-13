@@ -11,6 +11,7 @@ namespace TiendaOnline.Application.DTOs
     public class ProductoDTO
     {
         public int Id { get; set; }
+
         [Required]
         [Range(0, double.MaxValue)]
         public decimal Precio { get; set; }
@@ -19,11 +20,10 @@ namespace TiendaOnline.Application.DTOs
         public string Descripcion { get; set; }
 
         [Required]
-        public int ColorId { get; set; }
+        public List<int> ColoresIds { get; set; }
 
         [Required]
-        public int TallaId { get; set; }
-
+        public List<int> TallasIds { get; set; }
     }
 
 }

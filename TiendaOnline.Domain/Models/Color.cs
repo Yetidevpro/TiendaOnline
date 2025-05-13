@@ -12,7 +12,7 @@ namespace TiendaOnline.Domain.Models
         [StringLength(50)]
         public string ColorNombre { get; set; }
 
-        public ICollection<Producto> Productos { get; set; } = new List<Producto>();
+        public ICollection<ProductoColor> ProductoColores { get; set; } = new List<ProductoColor>();
     }
 
 }

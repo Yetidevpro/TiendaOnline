@@ -1,44 +1,28 @@
 ﻿using Xunit;
-using Microsoft.EntityFrameworkCore;
-using TiendaOnline.Infrastructure.Data;
 using TiendaOnline.Application.Services;
-using TiendaOnline.Domain.Models;
-using System.Linq;
-using System.Collections.Generic;
+using TiendaOnline.Application.DTOs;
 using System.Threading.Tasks;
+using TiendaOnline.Testing.ServicesTest;
 
-namespace TiendaOnline.Testing.ServicesTest
+public class TallaServiceTests
 {
-    public class TallaServiceTests
+    [Fact]
+    public async Task Crear_Obtener_Actualizar_Eliminar_Talla()
     {
-        private ApplicationDbContext CrearContexto()
-        {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString()) 
-                .Options;
+        var context = TestHelper.GetInMemoryDbContext("TallaTestDb");
+        var service = new TallaService(context);
 
-            var context = new ApplicationDbContext(options);
-            context.Tallas.Add(new Talla { TallaId = 1, TallaNombre = "S" });
-            context.Tallas.Add(new Talla { TallaId = 2, TallaNombre = "M" });
-            context.SaveChanges();
+        var id = await service.CrearAsync(new TallaDTO { Nombre = "M" });
+        var talla = await service.ObtenerPorIdAsync(id);
+        Assert.Equal("M", talla.Nombre);
 
-            return context;
-        }
+        talla.Nombre = "L";
+        await service.ActualizarAsync(talla);
+        var tallaActualizada = await service.ObtenerPorIdAsync(id);
+        Assert.Equal("L", tallaActualizada.Nombre);
 
-        [Fact]
-        public async Task ObtenerTodosAsync_DeberiaDevolverTallasCorrectamente()
-        {
-            using var context = CrearContexto();
-            var service = new TallaService(context);
-
-            // Act
-            var tallas = await service.ObtenerTodosAsync();
-
-            // Assert
-            Assert.NotNull(tallas);
-            Assert.Equal(2, tallas.Count()); 
-            Assert.Contains(tallas, t => t.TallaNombre == "S");
-            Assert.Contains(tallas, t => t.TallaNombre == "M");
-        }
+        await service.EliminarAsync(id);
+        var eliminada = await service.ObtenerPorIdAsync(id);
+        Assert.Null(eliminada);
     }
 }

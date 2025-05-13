@@ -17,13 +17,8 @@ namespace TiendaOnline.Domain.Models
         [StringLength(500)]
         public string Descripcion { get; set; }
 
-        [Required]
-        public int ColorId { get; set; }
-        public Color Color { get; set; }
-
-        [Required]
-        public int TallaId { get; set; }
-        public Talla Talla { get; set; }
+        public ICollection<ProductoColor> ProductoColores { get; set; } = new List<ProductoColor>();
+        public ICollection<ProductoTalla> ProductoTallas { get; set; } = new List<ProductoTalla>();
     }
 
 

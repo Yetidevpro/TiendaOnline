@@ -21,9 +21,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuración de Entity Framework Core con SQL Server
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TiendaOnlineDB")));
+// Configuración de Entity Framework Core (diferenciar entre producción y pruebas)
+var connectionString = builder.Configuration.GetConnectionString("TiendaOnlineDB");
+
+if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+{
+    // En desarrollo o staging usar SQL Server
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
+else
+{
+    // En pruebas usar base de datos en memoria
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseInMemoryDatabase("TestDatabase"));
+}
 
 // Inyección de dependencias
 builder.Services.AddScoped<IProductoService, ProductoService>();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TiendaOnline.Application.DTOs;
 using TiendaOnline.Application.Services;
 using TiendaOnline.Domain.Models;
 
@@ -6,21 +7,50 @@ namespace TiendaOnline.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ColorController : ControllerBase
+    public class ColoresController : ControllerBase
     {
         private readonly IColorService _colorService;
 
-        public ColorController(IColorService colorService)
+        public ColoresController(IColorService colorService)
         {
             _colorService = colorService;
         }
 
-        //GET: api/color
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Color>>> GetAll()
+        public async Task<IActionResult> Get() =>
+            Ok(await _colorService.ObtenerTodosAsync());
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var colores = await _colorService.ObtenerTodosAsync();
-            return Ok(colores);
+            var color = await _colorService.ObtenerPorIdAsync(id);
+            if (color == null) return NotFound();
+            return Ok(color);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] ColorDTO dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var id = await _colorService.CrearAsync(dto);
+            return CreatedAtAction(nameof(Get), new { id }, dto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] ColorDTO dto)
+        {
+            if (id != dto.Id) return BadRequest("IDs no coinciden.");
+            var result = await _colorService.ActualizarAsync(dto);
+            if (!result) return NotFound();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _colorService.EliminarAsync(id);
+            if (!result) return NotFound();
+            return NoContent();
         }
     }
 }

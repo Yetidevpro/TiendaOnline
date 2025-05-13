@@ -1,44 +1,41 @@
 ﻿using Xunit;
-using Microsoft.EntityFrameworkCore;
-using TiendaOnline.Infrastructure.Data;
 using TiendaOnline.Application.Services;
-using TiendaOnline.Domain.Models;
-using System.Linq;
-using System.Collections.Generic;
+using TiendaOnline.Application.DTOs;
 using System.Threading.Tasks;
+using System.Linq;
+using TiendaOnline.Testing.ServicesTest;
 
-namespace TiendaOnline.Testing.ServicesTest
+public class ColorServiceTests
 {
-    public class ColorServiceTests
+    [Fact]
+    public async Task Crear_Obtener_Actualizar_Eliminar_Color()
     {
-        private ApplicationDbContext CrearContexto()
-        {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString()) 
-                .Options;
+        var context = TestHelper.GetInMemoryDbContext("ColorTestDb");
+        var service = new ColorService(context);
 
-            var context = new ApplicationDbContext(options);
-            context.Colores.Add(new Color { ColorId = 1, ColorNombre = "Rojo" });
-            context.Colores.Add(new Color { ColorId = 2, ColorNombre = "Azul" });
-            context.SaveChanges();
+        // Crear
+        var colorId = await service.CrearAsync(new ColorDTO { Nombre = "Rojo" });
+        Assert.True(colorId > 0);
 
-            return context;
-        }
+        // Obtener por ID
+        var color = await service.ObtenerPorIdAsync(colorId);
+        Assert.NotNull(color);
+        Assert.Equal("Rojo", color.Nombre);
 
-        [Fact]
-        public async Task ObtenerTodosAsync_DeberiaDevolverColoresCorrectamente()
-        {
-            using var context = CrearContexto();
-            var service = new ColorService(context);
+        // Actualizar
+        color.Nombre = "Verde";
+        var actualizado = await service.ActualizarAsync(color);
+        Assert.True(actualizado);
 
-            // Act
-            var colores = await service.ObtenerTodosAsync();
+        var actualizadoColor = await service.ObtenerPorIdAsync(colorId);
+        Assert.Equal("Verde", actualizadoColor.Nombre);
 
-            // Assert
-            Assert.NotNull(colores);
-            Assert.Equal(2, colores.Count()); 
-            Assert.Contains(colores, c => c.ColorNombre == "Rojo");
-            Assert.Contains(colores, c => c.ColorNombre == "Azul");
-        }
+        // Eliminar
+        var eliminado = await service.EliminarAsync(colorId);
+        Assert.True(eliminado);
+
+        //Obtener por ID
+        var borrado = await service.ObtenerPorIdAsync(colorId);
+        Assert.Null(borrado);
     }
 }
