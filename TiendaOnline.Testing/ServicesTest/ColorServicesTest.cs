@@ -14,21 +14,21 @@ public class ColorServiceTests
         var service = new ColorService(context);
 
         // Crear
-        var colorId = await service.CrearAsync(new ColorDTO { Nombre = "Rojo" });
+        var colorId = await service.CrearAsync(new ColorDTO { Nombre = "Turquesa" });
         Assert.True(colorId > 0);
 
         // Obtener por ID
         var color = await service.ObtenerPorIdAsync(colorId);
         Assert.NotNull(color);
-        Assert.Equal("Rojo", color.Nombre);
+        Assert.Equal("Turquesa", color.Nombre);
 
         // Actualizar
-        color.Nombre = "Verde";
+        color.Nombre = "Mostaza";
         var actualizado = await service.ActualizarAsync(color);
         Assert.True(actualizado);
 
         var actualizadoColor = await service.ObtenerPorIdAsync(colorId);
-        Assert.Equal("Verde", actualizadoColor.Nombre);
+        Assert.Equal("Mostaza", actualizadoColor.Nombre);
 
         // Eliminar
         var eliminado = await service.EliminarAsync(colorId);

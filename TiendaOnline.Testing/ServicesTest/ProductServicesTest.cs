@@ -26,7 +26,7 @@ public class ProductoServiceTests
         var productoDto = new ProductoDTO
         {
             Precio = 99.99m,
-            Descripcion = "Camiseta Azul",
+            Descripcion = "Bufanda Azul",
             ColoresIds = new List<int> { color.ColorId },
             TallasIds = new List<int> { talla.TallaId }
         };
@@ -36,15 +36,15 @@ public class ProductoServiceTests
 
         // Obtener
         var producto = await service.ObtenerPorIdAsync(id);
-        Assert.Equal("Camiseta Azul", producto.Descripcion);
+        Assert.Equal("Bufanda Azul", producto.Descripcion);
         Assert.Single(producto.ColoresIds);
         Assert.Single(producto.TallasIds);
 
         // Actualizar
-        producto.Descripcion = "Camiseta Roja";
+        producto.Descripcion = "Bufanda verde";
         await service.ActualizarAsync(producto);
         var actualizado = await service.ObtenerPorIdAsync(id);
-        Assert.Equal("Camiseta Roja", actualizado.Descripcion);
+        Assert.Equal("Bufanda verde", actualizado.Descripcion);
 
         // Eliminar
         await service.EliminarAsync(id);

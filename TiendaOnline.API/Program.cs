@@ -10,7 +10,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://127.0.0.1:5500") // URL de tu frontend
+            policy.WithOrigins("http://127.0.0.1:5500") // URL de tu frontend para pruebas locales
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -21,18 +21,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuración de Entity Framework Core (diferenciar entre producción y pruebas)
+// Configuración de Entity Framework Core para diferenciar entre entornos de produción y pruebas.
 var connectionString = builder.Configuration.GetConnectionString("TiendaOnlineDB");
 
 if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
 {
-    // En desarrollo o staging usar SQL Server
+    // En produción staging usar SQL Server
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(connectionString));
 }
 else
 {
-    // En pruebas usar base de datos en memoria
+    // En desarollo usar base de datos en memoria
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseInMemoryDatabase("TestDatabase"));
 }
@@ -54,7 +54,6 @@ if (app.Environment.IsDevelopment())
 // Aplicar CORS antes de la autorización y redirección HTTPS
 app.UseCors("AllowFrontend");
 
-// Si necesitas evitar redirección HTTPS en desarrollo (opcional)
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();

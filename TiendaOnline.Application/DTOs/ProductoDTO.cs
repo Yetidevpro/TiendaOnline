@@ -10,6 +10,7 @@ namespace TiendaOnline.Application.DTOs
 {
     public class ProductoDTO
     {
+        [Required]
         public int Id { get; set; }
 
         [Required]

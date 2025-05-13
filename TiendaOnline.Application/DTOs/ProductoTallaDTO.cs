@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,9 @@ namespace TiendaOnline.Application.DTOs
 {
     public class ProductoTallaDTO
     {
+        [Required]
         public int ProductoId { get; set; }
+        [Required]
         public int TallaId { get; set; }
     }
 }
