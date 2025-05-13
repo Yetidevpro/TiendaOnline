@@ -157,7 +157,7 @@ Se incluyen pruebas unitarias para los servicios de negocio (ProductoService, Co
 ```
 bash o desde powershell
 dotnet test
-``
+```
 Cada prueba realiza operaciones de creación, obtención, actualización y eliminación, validando el correcto funcionamiento de los servicios.
 
 ## 🧩 Swagger & CORS
