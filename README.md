@@ -95,7 +95,7 @@ La API utiliza Entity Framework Core como ORM (Object-Relational Mapper) para in
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tuusuario/tienda-online-api.git
+git clone https://github.com/tuusuario/TiendaOnline.git
 cd tienda-online-api
 ```
 
