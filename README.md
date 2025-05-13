@@ -109,7 +109,7 @@ La cadena de conexión está ubicada en el archivo TiendaOnline.Api/appsettings.
 }
 ```
 
-⚠️ **Nota**: Esta configuración es solo para pruebas esta prueba. En proyectos reales la ConecctionString iria en GitHub Secrets o Azure Key Vault. Ya que appsetting.json siempre esta en el ropositorio y cualquier persona que tuviera acceso al repositorio podria ver la coneccion con la base de datos.
+⚠️ **Nota**: Esta configuración es solo para esta prueba. En proyectos reales la ConecctionString iria en GitHub Secrets o Azure Key Vault. Ya que appsetting.json siempre esta en el ropositorio y cualquier persona que tuviera acceso al repositorio podria ver la coneccion con la base de datos.
 
 ### 3. Ejecutar el proyecto
 
