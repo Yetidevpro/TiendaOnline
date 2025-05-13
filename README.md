@@ -154,7 +154,8 @@ Se incluyen pruebas unitarias para los servicios de negocio (ProductoService, Co
 - Inyección de dependencias en los tests para asegurar pruebas aisladas y realistas.
 
 ### Ejecutar los tests
-```bash o desde powershell
+```
+bash o desde powershell
 dotnet test
 ``
 Cada prueba realiza operaciones de creación, obtención, actualización y eliminación, validando el correcto funcionamiento de los servicios.
