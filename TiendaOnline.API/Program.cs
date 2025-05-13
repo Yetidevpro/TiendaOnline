@@ -4,17 +4,17 @@ using TiendaOnline.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de CORS
+/*// Configuración de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://127.0.0.1:5500") // URL de tu frontend para pruebas locales
+            policy.WithOrigins("http://127.0.0.1:5500") // URL de tu frontend usado para pruebas locales
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
-});
+});*/
 
 // Agregar servicios a la colección.
 builder.Services.AddControllers();
