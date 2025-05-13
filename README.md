@@ -76,9 +76,9 @@ Se quiere crear una página web con las siguientes necesidades:
 ## 🗄️ Modelo de datos y Entity Framework Core
 
 La API utiliza Entity Framework Core como ORM (Object-Relational Mapper) para interactuar con la base de datos. A continuación se detalla la estructura de datos y las relaciones entre entidades:
-```
+
 ### Diagrama de relaciones
-```
+
 ┌──────────┐     ┌───────────────┐     ┌───────┐
 │ Producto │────┤ ProductoColor  │────┤ Color │
 └──────────┘     └───────────────┘     └───────┘
@@ -86,7 +86,7 @@ La API utiliza Entity Framework Core como ORM (Object-Relational Mapper) para in
      │           ┌───────────────┐     ┌───────┐
      └──────────┤ ProductoTalla  │────┤ Talla │
                 └───────────────┘     └───────┘
-```
+
 ### Características de la implementación
 
 - **Relaciones muchos a muchos**: Un producto puede tener múltiples colores y tallas, y viceversa.
