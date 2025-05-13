@@ -55,6 +55,7 @@ namespace TiendaOnline.Application.Services
             };
         }
 
+        //Puedes añadir tantos colores y tallas como tengas en cada producto dentro de su lista
         public async Task<int> CrearAsync(ProductoDTO productoDto)
         {
             await ValidarColorYTallaAsync(productoDto.ColoresIds, productoDto.TallasIds);
