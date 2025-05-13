@@ -13,7 +13,7 @@ public class ProductoServiceTests
     {
         var context = TestHelper.GetInMemoryDbContext("ProductoTestDb");
 
-        // Sembramos datos necesarios
+        // Crear colores y tallas para el producto
         var color = new Color { ColorNombre = "Azul" };
         var talla = new Talla { TallaNombre = "XL" };
         context.Colores.Add(color);

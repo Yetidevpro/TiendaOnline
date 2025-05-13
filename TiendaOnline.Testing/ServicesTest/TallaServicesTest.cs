@@ -12,17 +12,21 @@ public class TallaServiceTests
         var context = TestHelper.GetInMemoryDbContext("TallaTestDb");
         var service = new TallaService(context);
 
+        // Crear
         var id = await service.CrearAsync(new TallaDTO { Nombre = "M" });
         var talla = await service.ObtenerPorIdAsync(id);
         Assert.Equal("M", talla.Nombre);
-
         talla.Nombre = "L";
+
+        // Actualizar
         await service.ActualizarAsync(talla);
         var tallaActualizada = await service.ObtenerPorIdAsync(id);
         Assert.Equal("L", tallaActualizada.Nombre);
 
+        // Eliminar
         await service.EliminarAsync(id);
         var eliminada = await service.ObtenerPorIdAsync(id);
         Assert.Null(eliminada);
     }
+
 }

@@ -15,11 +15,11 @@ namespace TiendaOnline.Api.Controllers
         {
             _colorService = colorService;
         }
-
+        // GET: api/colores
         [HttpGet]
         public async Task<IActionResult> Get() =>
             Ok(await _colorService.ObtenerTodosAsync());
-
+        // GET: api/colores/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -27,7 +27,7 @@ namespace TiendaOnline.Api.Controllers
             if (color == null) return NotFound();
             return Ok(color);
         }
-
+        // POST: api/colores
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ColorDTO dto)
         {
@@ -35,7 +35,7 @@ namespace TiendaOnline.Api.Controllers
             var id = await _colorService.CrearAsync(dto);
             return CreatedAtAction(nameof(Get), new { id }, dto);
         }
-
+        // PUT: api/colores/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] ColorDTO dto)
         {
@@ -44,7 +44,7 @@ namespace TiendaOnline.Api.Controllers
             if (!result) return NotFound();
             return NoContent();
         }
-
+        // DELETE: api/colores/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

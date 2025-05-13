@@ -15,10 +15,13 @@ namespace TiendaOnline.Api.Controllers
         {
             _tallaService = tallaService;
         }
+        // GET: api/tallas
 
         [HttpGet]
         public async Task<IActionResult> Get() =>
             Ok(await _tallaService.ObtenerTodosAsync());
+
+        // GET: api/tallas/{id}
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -28,6 +31,8 @@ namespace TiendaOnline.Api.Controllers
             return Ok(talla);
         }
 
+        // POST: api/tallas
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] TallaDTO dto)
         {
@@ -35,6 +40,8 @@ namespace TiendaOnline.Api.Controllers
             var id = await _tallaService.CrearAsync(dto);
             return CreatedAtAction(nameof(Get), new { id }, dto);
         }
+
+        // PUT: api/tallas/{id}
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] TallaDTO dto)
@@ -44,6 +51,7 @@ namespace TiendaOnline.Api.Controllers
             if (!result) return NotFound();
             return NoContent();
         }
+        // DELETE: api/tallas/{id}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

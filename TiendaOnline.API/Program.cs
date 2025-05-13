@@ -26,13 +26,13 @@ var connectionString = builder.Configuration.GetConnectionString("TiendaOnlineDB
 
 if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
 {
-    // En produción staging usar SQL Server
+    // En produción 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(connectionString));
 }
 else
 {
-    // En desarollo usar base de datos en memoria
+    // Para desarrollo 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseInMemoryDatabase("TestDatabase"));
 }
