@@ -185,11 +185,6 @@ Las siguientes mejoras están planeadas para próximas versiones:
 - **Autenticación y autorización**:
   - Implementación de JWT para acceso seguro a la API
   - Roles de usuario (Admin, Cliente, Vendedor)
-  - Refresh tokens para mejorar la experiencia de usuario
-
-- **Mejoras en la arquitectura**:
-  - Implementación de AutoMapper para mapeo entre entidades y DTOs
-  - FluentValidation para validaciones robustas de datos de entrada
 
 - **Monitoreo y diagnóstico**:
   - Logging estructurado
