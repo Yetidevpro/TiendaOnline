@@ -9,8 +9,7 @@ namespace TiendaOnline.Domain.Models
 {
     public class ProductoColor
     {
-        [Key]
-
+        [Required]
         public int ProductoId { get; set; }
         [Required]
         public Producto Producto { get; set; }

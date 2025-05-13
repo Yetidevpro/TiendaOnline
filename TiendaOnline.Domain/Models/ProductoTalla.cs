@@ -9,7 +9,7 @@ namespace TiendaOnline.Domain.Models
 {
     public class ProductoTalla
     {
-        [Key]
+        [Required]
         public int ProductoId { get; set; }
         [Required]
         public Producto Producto { get; set; }
