@@ -61,7 +61,6 @@ Se quiere crear una página web con las siguientes necesidades:
 - Entity Framework Core 9 (InMemory y SQL Server)
 - xUnit
 - Swagger / Swashbuckle
-- Moq
 - CORS habilitado para pruebas
 - Buenas prácticas: SOLID, DTOs, pruebas unitarias, separación por capas, inyección de dependencias
 
