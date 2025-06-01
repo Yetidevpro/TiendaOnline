@@ -4,7 +4,7 @@ using TiendaOnline.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*// Configuración de CORS
+/*// Configuraciï¿½n de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -16,17 +16,17 @@ builder.Services.AddCors(options =>
         });
 });*/
 
-// Agregar servicios a la colección.
+// Agregar servicios a la colecciï¿½n.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuración de Entity Framework Core para diferenciar entre entornos de produción y pruebas.
+// Configuraciï¿½n de Entity Framework Core para diferenciar entre entornos de produciï¿½n y pruebas.
 var connectionString = builder.Configuration.GetConnectionString("TiendaOnlineDB");
 
 if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
 {
-    // En produción 
+    // En produciï¿½n 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(connectionString));
 }
@@ -37,21 +37,21 @@ else
         options.UseInMemoryDatabase("TestDatabase"));
 }
 
-// Inyección de dependencias
+// Inyecciï¿½n de dependencias
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IColorService, ColorService>();
 builder.Services.AddScoped<ITallaService, TallaService>();
 
 var app = builder.Build();
 
-// Configuración del pipeline de solicitudes HTTP.
+// Configuraciï¿½n del pipeline de solicitudes HTTP.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+    app.UseSwagger();// Genera la documentaciï¿½n Swagger
     app.UseSwaggerUI();
 }
 
-// Aplicar CORS antes de la autorización y redirección HTTPS
+// Aplicar CORS antes de la autorizaciï¿½n y redirecciï¿½n HTTPS
 app.UseCors("AllowFrontend");
 
 if (!app.Environment.IsDevelopment())
